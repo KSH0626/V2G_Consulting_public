@@ -536,5 +536,8 @@ def create_web_scenario(name, capacity, location, budget, target_roi, risk_toler
     )
 
 if __name__ == "__main__":
-    # Streamlit 실행: streamlit run interactive_dashboard.py
-    run_dashboard()
+    # Railway에서는 이 부분이 직접 실행되지 않으므로
+    # Streamlit이 파일을 직접 실행할 수 있도록 함수 호출을 제거
+    dashboard = V2GDashboard()
+    dashboard.create_dashboard()
+
