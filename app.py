@@ -1,6 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
+import pandas as pd
 from plotly.subplots import make_subplots
 from v2g_business_analyzer import V2GBusinessAnalyzer, V2GBusinessConsultant
 from advances_analysis import AdvancedV2GAnalyzer, BusinessScenario, create_scenario_from_web_input
@@ -540,4 +541,5 @@ if __name__ == "__main__":
     # Streamlit이 파일을 직접 실행할 수 있도록 함수 호출을 제거
     dashboard = V2GDashboard()
     dashboard.create_dashboard()
+
 
