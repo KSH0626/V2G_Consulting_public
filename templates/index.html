@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V2G 사업 분석 컨설팅 시스템</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <i class="fas fa-bolt me-2"></i>V2G 분석 시스템
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">홈</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#analysis">분석</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#results">결과</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">소개</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="display-4 fw-bold text-white mb-4">
+                            V2G 사업 분석<br>
+                            <span class="text-accent">통합 컨설팅 시스템</span>
+                        </h1>
+                        <p class="lead text-white-75 mb-4">
+                            수익성 분석과 종합 점수화를 통한 다면적 사업성 평가로<br>
+                            최적의 V2G 사업 모델을 제시하는 전문 컨설팅 시스템입니다.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#analysis" class="btn btn-accent btn-lg me-3">
+                                <i class="fas fa-calculator me-2"></i>분석 시작
+                            </a>
+                            <a href="#about" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-info-circle me-2"></i>자세히 보기
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image text-center">
+                        <div class="floating-card">
+                            {% if check_asset_exists('v2g-hero.png') %}
+                                <img src="/assets/v2g-hero.png" alt="V2G 시스템" class="img-fluid mb-3" style="max-width: 200px;">
+                            {% else %}
+                                <i class="fas fa-charging-station fa-5x text-accent mb-3"></i>
+                            {% endif %}
+                            <h5 class="text-white">통합 분석 솔루션</h5>
+                            <p class="text-white-75">수익성 + 종합점수 동시 분석</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <a href="#analysis" class="scroll-down">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Analysis Section -->
+    <section id="analysis" class="section-padding bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="section-title">V2G 사업 분석 도구</h2>
+                    <p class="section-subtitle">
+                        수익성과 종합 적합성을 동시에 분석하는 통합 시스템
+                    </p>
+                </div>
+            </div>
+
+            <!-- Analysis Tabs -->
+            <div class="row">
+                <div class="col-lg-3 mb-4">
+                    <div class="nav flex-column nav-pills analysis-nav" role="tablist">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#basic-analysis" role="tab">
+                            <i class="fas fa-calculator me-2"></i>기초 분석
+                            <span class="badge bg-success ms-1">통합</span>
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#advanced-analysis" role="tab">
+                            <i class="fas fa-chart-line me-2"></i>고급 분석
+                        </button>
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#comprehensive-analysis" role="tab">
+                            <i class="fas fa-bullseye me-2"></i>종합 분석
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="tab-content">
+                        <!-- Basic Analysis Tab (통합) -->
+                        <div class="tab-pane fade show active" id="basic-analysis" role="tabpanel">
+                            <div class="analysis-form-card">
+                                <h4 class="mb-4">
+                                    <i class="fas fa-calculator text-primary me-2"></i>기초 분석
+                                    <span class="badge bg-success ms-2">수익성 + 점수화 통합</span>
+                                </h4>
+                                <p class="text-muted mb-4">
+                                    기본 수익성 분석과 9개 지표 기반 점수화 분석을 동시에 수행하여 종합적인 사업성을 평가합니다.
+                                </p>
+                                
+                                <form id="basicAnalysisForm">
+                                    <!-- 기본 정보 -->
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6 class="text-primary border-bottom pb-2 mb-3">📋 기본 정보</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">설비 용량 (kW)</label>
+                                            <input type="number" class="form-control" id="capacity" value="1000" min="100" max="15000" required>
+                                            <div class="form-text">100kW ~ 15,000kW 범위에서 설정</div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">사업 지역</label>
+                                            <select class="form-select" id="location" required>
+                                                <option value="수도권">수도권</option>
+                                                <option value="충청권">충청권</option>
+                                                <option value="영남권">영남권</option>
+                                                <option value="호남권">호남권</option>
+                                                <option value="강원권">강원권</option>
+                                                <option value="제주권">제주권</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">예산 (억원)</label>
+                                            <input type="number" class="form-control" id="budgetBillion" value="15" min="1" max="1000" step="0.1" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 리스크 및 주차 패턴 -->
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6 class="text-primary border-bottom pb-2 mb-3">⚖️ 리스크 및 운영 패턴</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">리스크 선호도</label>
+                                            <select class="form-select" id="riskPreference" required>
+                                                <option value="stable">안정형</option>
+                                                <option value="neutral" selected>중립형</option>
+                                                <option value="high_risk">고위험형</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">일정 패턴 비율: <span id="regularPatternValue">70</span>%</label>
+                                            <input type="range" class="form-range" id="regularPatternRatio" min="0" max="100" value="70">
+                                            <div class="form-text">차량이 일정한 시간에 주차하는 비율</div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">DR 발령시간 비율: <span id="drDispatchValue">60</span>%</label>
+                                            <input type="range" class="form-range" id="drDispatchTimeRatio" min="0" max="100" value="60">
+                                            <div class="form-text">DR 발령 시간대에 주차된 차량 비율</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 인프라 정보 -->
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6 class="text-primary border-bottom pb-2 mb-3">🏗️ 인프라 정보</h6>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">충전부지 (면수)</label>
+                                            <input type="number" class="form-control" id="chargingSpots" value="50" min="1" max="500" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">수전용량 (MVA)</label>
+                                            <input type="number" class="form-control" id="powerCapacityMva" value="0.3" min="0.1" max="5" step="0.1" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- 충전기 정보 -->
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6 class="text-primary border-bottom pb-2 mb-3">🔌 충전기 정보</h6>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">전체 포트수</label>
+                                            <input type="number" class="form-control" id="totalPorts" value="100" min="1" max="1000" required>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">스마트/OCPP 포트수</label>
+                                            <input type="number" class="form-control" id="smartOcppPorts" value="60" min="0" max="1000" required>
+                                            <div class="form-text">DR 참여 가능한 포트수</div>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="form-label">V2G 포트수</label>
+                                            <input type="number" class="form-control" id="v2gPorts" value="30" min="0" max="1000" required>
+                                            <div class="form-text">양방향 충전 가능한 포트수</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 기타 정보 -->
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6 class="text-primary border-bottom pb-2 mb-3">🏢 기타 정보</h6>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">브랜드 유형</label>
+                                            <select class="form-select" id="brandType" required>
+                                                <option value="b2g_large">공공기관/대기업</option>
+                                                <option value="others" selected>기타</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- 배터리 SOH 분포 -->
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h6 class="text-primary border-bottom pb-2 mb-3">🔋 배터리 SOH 분포</h6>
+                                            <p class="text-muted small">각 SOH 구간별 차량 비율을 입력하세요 (합계가 100%가 되도록)</p>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">70% 이하: <span id="sohUnder70Value">10</span>%</label>
+                                            <input type="range" class="form-range" id="sohUnder70Ratio" min="0" max="100" value="10">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">70-85%: <span id="soh7085Value">30</span>%</label>
+                                            <input type="range" class="form-range" id="soh7085Ratio" min="0" max="100" value="30">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">85-95%: <span id="soh8595Value">50</span>%</label>
+                                            <input type="range" class="form-range" id="soh8595Ratio" min="0" max="100" value="50">
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label class="form-label">95% 초과: <span id="sohOver95Value">10</span>%</label>
+                                            <input type="range" class="form-range" id="sohOver95Ratio" min="0" max="100" value="10">
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="sohTotalDisplay" class="alert alert-info">
+                                                <small>현재 SOH 분포 총합: <span id="sohTotal">100</span>%</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                                            <i class="fas fa-search me-2"></i>기초 분석 실행
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Analysis Tab - 확장된 입력폼 -->
+                        <div class="tab-pane fade" id="advanced-analysis" role="tabpanel">
+                            <div class="analysis-form-card">
+                                <h4 class="mb-4">
+                                    <i class="fas fa-chart-line text-primary me-2"></i>고급 분석
+                                </h4>
+                                <p class="text-muted mb-4">
+                                    다중 시나리오를 기반으로 DR/SMP 사업별 종합 비교 분석을 수행합니다. 각 시나리오별로 상세한 조건을 입력하세요.
+                                </p>
+                                
+                                <div id="scenarioContainer">
+                                    <!-- 시나리오 입력 폼들이 동적으로 추가됩니다 -->
+                                </div>
+                                
+                                <div class="text-center mt-4">
+                                    <button type="button" class="btn btn-outline-primary me-3" onclick="addScenario()">
+                                        <i class="fas fa-plus me-2"></i>시나리오 추가
+                                    </button>
+                                    <button type="button" class="btn btn-primary px-5" onclick="runAdvancedAnalysis()">
+                                        <i class="fas fa-chart-bar me-2"></i>고급 분석 실행
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comprehensive Analysis Tab -->
+                        <div class="tab-pane fade" id="comprehensive-analysis" role="tabpanel">
+                            <div class="analysis-form-card text-center">
+                                <h4 class="mb-4">
+                                    <i class="fas fa-bullseye text-primary me-2"></i>종합 분석
+                                </h4>
+                                <p class="lead mb-4">
+                                    기초 분석 조건을 바탕으로 시장 벤치마킹 및 종합적인 분석을 수행합니다.
+                                </p>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>안내:</strong> 기초 분석을 먼저 실행한 후 종합 분석을 진행하세요.
+                                </div>
+                                <button type="button" class="btn btn-primary btn-lg px-5" onclick="runComprehensiveAnalysis()">
+                                    <i class="fas fa-rocket me-2"></i>종합 분석 실행
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="section-padding">
+        <div class="container">
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="text-center" style="display: none;">
+                <div class="spinner-border text-primary mb-3" style="width: 4rem; height: 4rem;"></div>
+                <h4 class="text-muted">분석을 진행하고 있습니다...</h4>
+                <p class="text-muted">잠시만 기다려주세요.</p>
+            </div>
+
+            <!-- Basic Results Container (통합) -->
+            <div id="resultsContainer" style="display: none;">
+                <div class="row mb-5">
+                    <div class="col-lg-12 text-center">
+                        <h2 class="section-title">기초 분석 결과</h2>
+                        <p class="section-subtitle">
+                            수익성 분석과 점수화 분석을 통합한 종합 평가 결과입니다
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Final Recommendation (최상단) -->
+                <div class="row mb-5">
+                    <div class="col-lg-12">
+                        <div id="finalRecommendationContent">
+                            <!-- 최종 추천 결과가 여기에 표시됩니다 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metrics Cards -->
+                <div class="row mb-5" id="metricsCards">
+                    <!-- 동적으로 생성됩니다 -->
+                </div>
+
+                <!-- Charts Row - 1단으로 변경 -->
+                <div class="row mb-5">
+                    <!-- Basic Analysis Chart - 전체 너비 -->
+                    <div class="col-lg-12 mb-4">
+                        <div class="result-card">
+                            <h5 class="card-title">
+                                <i class="fas fa-chart-bar me-2"></i>수익성 비교 분석
+                            </h5>
+                            <div id="chartContainer" style="height: 500px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-5">
+                    <!-- Score Analysis Chart - 전체 너비 -->
+                    <div class="col-lg-12 mb-4">
+                        <div class="result-card">
+                            <h5 class="card-title">
+                                <i class="fas fa-star me-2"></i>종합 점수 분석
+                            </h5>
+                            <div id="scoreChartContainer" style="height: 500px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Row -->
+                <div class="row">
+                    <!-- Basic Report -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="result-card">
+                            <h5 class="card-title">
+                                <i class="fas fa-file-alt me-2"></i>수익성 상세 리포트
+                            </h5>
+                            <div id="detailReport" class="report-content"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Score Report -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="result-card">
+                            <h5 class="card-title">
+                                <i class="fas fa-star me-2"></i>점수화 상세 리포트
+                            </h5>
+                            <div id="scoreReport" class="report-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Results -->
+            <div id="advancedResults" style="display: none;">
+                <!-- 고급 분석 결과가 여기에 표시됩니다 -->
+            </div>
+
+            <!-- Comprehensive Results - 폰트 통일 -->
+            <div id="comprehensiveResults" style="display: none;">
+                <div class="result-card">
+                    <h4 class="card-title">
+                        <i class="fas fa-bullseye me-2"></i>종합 분석 결과
+                    </h4>
+                    <div id="comprehensiveReport" class="report-content" style="font-family: 'Inter', Arial, sans-serif; font-size: 1rem; line-height: 1.6;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center mb-5">
+                    <h2 class="section-title">V2G 분석 시스템 소개</h2>
+                    <p class="section-subtitle">
+                        전문적이고 신뢰할 수 있는 V2G 사업 분석 솔루션
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h5>통합 기초 분석</h5>
+                        <p>수익성 분석과 9개 지표 기반 점수화 분석을 동시에 수행하여 종합적인 사업성을 평가합니다.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h5>고급 분석</h5>
+                        <p>다중 시나리오 기반 DR/SMP 사업별 종합 비교 분석을 제공합니다.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h5>종합 분석</h5>
+                        <p>시장 벤치마킹과 경쟁사 비교를 통한 전략적 인사이트를 제공합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5><i class="fas fa-bolt me-2"></i>V2G 분석 시스템</h5>
+                    <p class="mb-0">미래형 전력거래 사업 분석 솔루션</p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <p class="mb-0">&copy; 2024 V2G Business Analysis System. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
