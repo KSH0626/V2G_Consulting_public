@@ -430,7 +430,9 @@ def run_server_enhanced():
         
         threading.Thread(target=open_browser, daemon=True).start()
         
-        app.run(host='127.0.0.1', port=5000, debug=True, use_reloader=False, threaded=True)
+        # run_server_jupyter.py의 마지막 부분을 다음과 같이 수정
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False, threaded=True)
         
     except KeyboardInterrupt:
         print("\n👋 서버를 종료합니다.")
@@ -438,4 +440,5 @@ def run_server_enhanced():
         print(f"❌ 서버 오류: {e}")
 
 if __name__ == '__main__':
+
     run_server_enhanced()
